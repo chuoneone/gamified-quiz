@@ -36,13 +36,25 @@ gamified-quiz/
 
 ## 🚀 如何使用
 
-### 方式 1：搭配 Antigravity AI 助理使用
-1. 將本 Repo Clone 下來，或將 `.agents/skills/gamified-quiz` 加入你的工作區。
-2. 直接向 AI 助理輸入你的題目（例如：「*請幫我將這 10 題數學/國文/英文題做成盲盒遊戲測驗*」）。
-3. AI 將自動產出獨立的 HTML 遊戲檔案！
+### 1. 安裝 Skill
+直接在你的 Antigravity / AI Agent 對話框中貼上以下指令：
 
-### 方式 2：直接使用瀏覽器開啟
-* 雙擊開啟 `index.html` 即可直接在離線狀態下暢玩範例題庫！
+> **請安裝這個skill︰https://github.com/chuoneone/gamified-quiz**
+
+安裝完成後，AI 即可自動獲得「測驗遊戲化產生器」的所有能力！
+
+---
+
+### 2. 生成遊戲化測驗
+隨時提供你的題目給 AI：
+> 「*請幫我將這份試題（國文/英文/數學/自然/社會）做成盲盒遊戲測驗*」
+
+AI 將自動為你生成完整的單一檔案互動測驗 HTML！
+
+---
+
+### 3. 線上或離線試玩
+* 雙擊開啟 `index.html` 或訪問 GitHub Pages 即可直接在瀏覽器遊玩範例題庫！
 
 ---
 
