@@ -2,8 +2,6 @@
 
 > 將枯燥的各學科練習題，一鍵轉換為高互動度、高沉浸感的單一獨立「遊戲式互動測驗」！
 
-![Preview](preview.png)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Antigravity Skill](https://img.shields.io/badge/Antigravity-Skill-blue.svg)](https://github.com)
 
@@ -12,12 +10,20 @@
 ## 🌟 精選雙大遊戲模板
 
 ### 1. 🎲 經典環形大富翁（手動甩骰）(`index.html`)
+
+![大富翁遊戲畫面](preview-monopoly.png)
+
 - 🔄 **經典 6x6 環形外環棋盤**：20 格外環地圖順時針循環繞行，每次經過「🚩 起點 GO」**自動加圈數並領取 150 金幣獎勵**！
 - 🎲 **答對親手甩骰子（手動擲骰）**：答對題目後解鎖骰子光芒，學生必須親手點擊骰子甩出步數！
 - 🏃‍♂️ **逐格平滑跳躍前進**：棋子伴隨生動跳躍音效逐格前進，踩點觸發幸運寶箱、機會命運與陷阱收費站。
 - 🏙️ **收購世界地產**：踩中台北、東京、倫敦、巴黎、紐約等城市可花費金幣收購並插上 `🏡 已購` 地標！
 
+---
+
 ### 2. 🎁 盲盒抽卡養成（動物園圖鑑）(`blind-box.html`)
+
+![盲盒抽卡畫面](preview-blindbox.png)
+
 - 📦 **擬真開箱抽卡動畫**：累積金幣與特殊代幣進行單抽或十連抽，享受開箱震動、金光與音效！
 - 🦁 **SSR 稀有度圖鑑養成**：搜集魔法動物園各式夥伴（R、SR、SSR），重複獲得自動升級星級。
 - 🔥 **連擊 Combo 經濟**：連續答對題目觸發連擊倍率，獲取額外金幣與特殊扭蛋代幣。
@@ -63,12 +69,13 @@ AI 將自動為你生成完整的單一檔案互動測驗 HTML！
 ```text
 gamified-quiz/
 ├── .agents/skills/gamified-quiz/
-│   └── SKILL.md          # Antigravity 專案技能定義
-├── index.html            # 🎲 大富翁環遊世界遊戲主程式 (手動甩骰/環形繞圈)
-├── blind-box.html        # 🎁 盲盒抽卡養成遊戲主程式 (開箱扭蛋/圖鑑搜集)
-├── preview.png           # 預覽圖片
-├── SKILL.md              # 技能標準說明檔
-└── README.md             # 專案說明文件
+│   └── SKILL.md              # Antigravity 專案技能定義
+├── index.html                # 🎲 大富翁環遊世界遊戲主程式 (手動甩骰/環形繞圈)
+├── blind-box.html            # 🎁 盲盒抽卡養成遊戲主程式 (開箱扭蛋/圖鑑搜集)
+├── preview-monopoly.png      # 🎲 大富翁遊戲實機畫面 (輕量化 230KB)
+├── preview-blindbox.png      # 🎁 盲盒抽卡實機畫面 (輕量化 125KB)
+├── SKILL.md                  # 技能標準說明檔
+└── README.md                 # 專案說明文件
 ```
 
 ---
