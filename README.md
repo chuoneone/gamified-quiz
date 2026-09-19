@@ -32,6 +32,8 @@
 
 ### 3. 🏎️ 3D 數線穿梭跑酷（Cyber Runner）(`cyber-runner.html`)
 
+![3D跑酷遊戲畫面](preview-runner.png)
+
 - 🚀 **Three.js 3D 賽博科幻賽道**：立體數線極速狂飆，視覺震撼度與專注度滿分！
 - 🎯 **高對比顯眼題目儀**：超大字體運算目標與光門距離儀，遠距穿梭也能輕鬆看清並心算。
 - 🕹️ **即時車道指示卡**：支援鍵盤左右鍵 `<` `>` 或直接點擊底部三車道卡片換道。
@@ -82,8 +84,9 @@ gamified-quiz/
 ├── index.html                # 🎲 大富翁環遊世界遊戲主程式 (手動甩骰/環形繞圈)
 ├── blind-box.html            # 🎁 盲盒抽卡養成遊戲主程式 (開箱扭蛋/圖鑑搜集)
 ├── cyber-runner.html         # 🏎️ 3D 數線穿梭跑酷遊戲主程式 (Three.js/Tone.js)
-├── preview-monopoly.png      # 🎲 大富翁遊戲實機畫面
-├── preview-blindbox.png      # 🎁 盲盒抽卡實機畫面
+├── preview-monopoly.png      # 🎲 大富翁遊戲實機畫面 (輕量化 230KB)
+├── preview-blindbox.png      # 🎁 盲盒抽卡實機畫面 (輕量化 125KB)
+├── preview-runner.png        # 🏎️ 3D 跑酷實機畫面 (輕量化 160KB)
 ├── SKILL.md                  # 技能標準說明檔
 └── README.md                 # 專案說明文件
 ```
