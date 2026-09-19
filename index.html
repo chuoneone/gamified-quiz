@@ -328,12 +328,23 @@
 </head>
 <body>
 
+    <!-- 頂部遊戲模式切換導覽 (Mode Switcher) -->
+    <div style="position: fixed; top: 10px; z-index: 999; background: rgba(255,255,255,0.92); padding: 6px 14px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; gap: 8px; align-items: center; backdrop-filter: blur(8px); border: 2px solid #fff; max-width: 95vw; overflow-x: auto;">
+        <span style="font-weight: bold; font-size: 0.85rem; color: #5d4037; white-space: nowrap;">🎮 切換模式：</span>
+        <a href="index.html" style="text-decoration: none; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: bold; background: #ff8a80; color: #fff; white-space: nowrap;">🎁 盲盒抽卡</a>
+        <a href="template-rpg.html" style="text-decoration: none; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: bold; background: #e8eaf6; color: #3f51b5; white-space: nowrap;">⚔️ RPG地牢</a>
+        <a href="template-space.html" style="text-decoration: none; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: bold; background: #e0f7fa; color: #00838f; white-space: nowrap;">🚀 太空防衛</a>
+        <a href="template-boardgame.html" style="text-decoration: none; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: bold; background: #e8f5e9; color: #2e7d32; white-space: nowrap;">🏝️ 大富翁</a>
+        <a href="template-diner.html" style="text-decoration: none; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: bold; background: #fff3e0; color: #e65100; white-space: nowrap;">🍣 美食餐車</a>
+        <a href="template-escape.html" style="text-decoration: none; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: bold; background: #f3e5f5; color: #7b1fa2; white-space: nowrap;">🧩 密室逃脫</a>
+    </div>
+
     <!-- 裝飾背景 -->
     <div class="bubble" style="width: 90px; height: 90px; top: 10%; left: -20px;"></div>
     <div class="bubble" style="width: 55px; height: 55px; bottom: 18%; right: -10px; animation-delay: 2s;"></div>
     <div class="bubble" style="width: 75px; height: 75px; top: 38%; right: 18%; animation-delay: 4s;"></div>
 
-    <div id="game-container">
+    <div id="game-container" style="margin-top: 30px;">
         
         <!-- 手機版專用頂部欄 -->
         <div class="mobile-top-bar" id="mobile-header">

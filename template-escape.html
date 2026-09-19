@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>神秘密室逃脫 - 比與比例式</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@400;700&family=Fredoka:wght@400;600;700&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        :root {
+            --escape-bg: #1e152a;
+            --escape-gold: #ffd54f;
+            --escape-purple: #9c27b0;
+            --escape-cyan: #00e5ff;
+            --escape-card: #2c1f3d;
+        }
+
+        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Fredoka', 'Chiron GoRound TC', sans-serif;
+            height: 100vh; height: 100dvh; overflow: hidden;
+            background: radial-gradient(circle at center, #2d1840 0%, #11071c 100%);
+            color: #f3e5f5;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        #game-container {
+            width: 92%; max-width: 980px; height: 88vh; height: 88dvh;
+            background: var(--escape-card); border-radius: 24px;
+            box-shadow: 0 0 35px rgba(156, 39, 176, 0.4); display: flex; flex-direction: column;
+            position: relative; overflow: hidden; border: 3px solid #ba68c8;
+        }
+
+        /* 頂部機關狀態列 */
+        .seal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px; background: rgba(17, 7, 28, 0.85); border-bottom: 2px solid #6a1b9a;
+            font-family: 'Cinzel', serif;
+        }
+        .seals-track { display: flex; gap: 10px; align-items: center; }
+        .seal-item {
+            width: 36px; height: 36px; border-radius: 50%; background: #4a148c;
+            border: 2px solid #7b1fa2; display: flex; justify-content: center; align-items: center;
+            font-size: 1.1rem; opacity: 0.4; transition: 0.3s;
+        }
+        .seal-item.unlocked { opacity: 1; border-color: var(--escape-gold); box-shadow: 0 0 12px var(--escape-gold); }
+
+        /* 密室主機關區 */
+        .escape-stage {
+            flex: 1; display: flex; flex-direction: column; justify-content: space-between;
+            padding: 14px 20px; overflow-y: auto;
+        }
+
+        .door-visual {
+            display: flex; justify-content: center; align-items: center; gap: 20px;
+            padding: 10px; min-height: 120px;
+        }
+        .portal-door {
+            font-size: 5rem; filter: drop-shadow(0 0 15px rgba(186, 104, 200, 0.6));
+            transition: transform 0.4s;
+        }
+        .portal-door.open { transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 25px var(--escape-cyan)); }
+
+        .rune-card {
+            background: rgba(17, 7, 28, 0.9); border: 2px solid #ab47bc;
+            border-radius: 20px; padding: 16px 20px; text-align: center; margin-bottom: 12px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+        .question-text { font-size: 1.45rem; color: #fff; margin: 4px 0 10px 0; font-weight: bold; line-height: 1.5; }
+
+        #options-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .option-btn {
+            background: #38244e; border: 2px solid #6a1b9a; color: #e1bee7; padding: 12px 16px;
+            border-radius: 14px; font-size: 1.15rem; font-weight: bold; cursor: pointer; transition: 0.15s;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 0 #1f112c;
+        }
+        .option-btn:hover:not(.locked) { border-color: var(--escape-cyan); background: #4a2d68; transform: translateY(-2px); }
+        .option-btn.correct { background: #2e7d32 !important; border-color: #4caf50 !important; color: #fff !important; }
+        .option-btn.wrong { background: #c62828 !important; border-color: #f44336 !important; color: #fff !important; }
+        .option-btn.locked { cursor: default; opacity: 0.5; }
+        .option-btn.locked.correct { opacity: 1; }
+
+        .btn {
+            background: #ab47bc; color: #fff; border: none; padding: 10px 22px; font-size: 1.05rem;
+            border-radius: 14px; font-weight: bold; cursor: pointer; font-family: inherit;
+            box-shadow: 0 4px 0 #6a1b9a; transition: 0.15s;
+        }
+        .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .katex { font-size: 1.15em !important; color: var(--escape-cyan); font-weight: bold; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 100; display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(6px); padding: 16px;
+        }
+        .modal-box {
+            background: #241435; border: 2px solid #ab47bc; border-radius: 24px;
+            padding: 28px 24px; text-align: center; max-width: 360px; width: 90%;
+            box-shadow: 0 0 30px rgba(186, 104, 200, 0.4);
+        }
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            #game-container { height: 96vh; height: 96dvh; width: 96%; }
+            .portal-door { font-size: 4rem; }
+            .question-text { font-size: 1.25rem; }
+            #options-list { grid-template-columns: 1fr; gap: 8px; }
+            .option-btn { padding: 10px 12px; font-size: 1.05rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- 頂部封印狀態 -->
+        <div class="seal-header">
+            <div>🗝️ 冒險者: <span id="player-label">解密家</span></div>
+            <div class="seals-track">
+                <span>封印破解：</span>
+                <div class="seal-item" id="seal-1">🔥</div>
+                <div class="seal-item" id="seal-2">💧</div>
+                <div class="seal-item" id="seal-3">🌿</div>
+                <div class="seal-item" id="seal-4">⚡</div>
+            </div>
+        </div>
+
+        <!-- 密室主機關舞台 -->
+        <div class="escape-stage">
+            <div class="door-visual">
+                <div style="font-size: 2.5rem;">🔮</div>
+                <div class="portal-door" id="portal-door">🚪</div>
+                <div style="font-size: 2.5rem;">📜</div>
+            </div>
+
+            <!-- 符文題目卡 -->
+            <div class="rune-card">
+                <div style="color: #ba68c8; font-family: 'Cinzel'; font-size: 0.88rem; letter-spacing: 2px;">
+                    SEAL CIPHER #<span id="q-index">1</span>
+                </div>
+                <div class="question-text" id="q-text">古代符文解碼中...</div>
+                <div style="display:flex; justify-content:center; gap:8px;">
+                    <button class="btn" style="padding:4px 12px; font-size:0.85rem;" onclick="playQuestionAudio()">🔊 符文詠唱</button>
+                </div>
+            </div>
+
+            <div id="options-list"></div>
+            <div id="feedback-msg" style="text-align: center; height: 24px; font-weight: bold; color: var(--escape-gold); margin-top: 6px;"></div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <button class="btn" style="background:#5c3d75; box-shadow:0 4px 0 #3a234c;" onclick="prevQuestion()" id="prev-btn">◀ 上一道符文</button>
+                <button class="btn" onclick="nextQuestion()" id="next-btn" disabled>下一道符文 ▶</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登入 Modal -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div style="font-size: 3.5rem; margin-bottom: 8px;">🗝️</div>
+            <h2 style="color: var(--escape-gold); margin-top: 0; font-family: 'Cinzel';">THE MYSTIC ESCAPE</h2>
+            <p style="color: #ce93d8; margin-bottom: 18px;">請輸入解密家大名，解開四大元素封印逃脫密室！</p>
+            <input type="text" id="player-name-input" placeholder="請輸入名字" style="width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #ab47bc; background: #1a0c28; color: #fff; font-size: 1.15rem; margin-bottom: 18px; text-align: center;">
+            <button class="btn" onclick="loginAndStart()" style="width: 100%;">開啟密室石門 🔮</button>
+        </div>
+    </div>
+
+    <!-- 逃脫成功 Modal -->
+    <div id="escape-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div style="font-size: 4rem; margin-bottom: 8px;">🌌</div>
+            <h2 style="color: var(--escape-cyan); margin-top: 0;">密室封印徹底破除！</h2>
+            <p id="escape-desc" style="color: #e1bee7; margin-bottom: 20px; line-height: 1.5;"></p>
+            <button class="btn" onclick="location.reload()" style="width: 100%;">再次挑戰密室 ↻</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "若小明有 $5$ 元，小華有 $8$ 元，則小明與小華錢數的「比」為何？", ans: "$5:8$", options: ["$5:8$", "$8:5$", "$\\frac{5}{8}$", "$\\frac{8}{5}$"] },
+            { q: "將比 $10:15$ 化為「最簡整數比」為何？", ans: "$2:3$", options: ["$10:15$", "$5:3$", "$2:3$", "$3:2$"] },
+            { q: "求比 $4:5$ 的「比值」是多少？", ans: "$\\frac{4}{5}$", options: ["$\\frac{5}{4}$", "$\\frac{4}{5}$", "$4$", "$5$"] },
+            { q: "將 $0.3:0.9$ 化為最簡整數比為何？", ans: "$1:3$", options: ["$3:9$", "$30:90$", "$1:3$", "$0.1:0.3$"] },
+            { q: "重量 $200$ 克對 $1$ 公斤的比，化為最簡整數比為何？", ans: "$1:5$", options: ["$200:1$", "$2:1$", "$1:5$", "$5:1$"] },
+            { q: "若 $x:3 = 4:6$，則 $x$ 之值為何？", ans: "$2$", options: ["$1$", "$2$", "$3$", "$4$"] },
+            { q: "計算比值：$12:4$。", ans: "$3$", options: ["$\\frac{1}{3}$", "$3$", "$12$", "$4$"] },
+            { q: "將 $\\frac{1}{2} : \\frac{1}{4}$ 化為最簡整數比為何？", ans: "$2:1$", options: ["$1:2$", "$2:1$", "$4:2$", "$1:4$"] },
+            { q: "若 $a:b = 7:3$，則下列敘述何者錯誤？", ans: "比值是 $\\frac{3}{7}$", options: ["比的前項是 $7$", "比的後項是 $3$", "比值是 $\\frac{7}{3}$", "比值是 $\\frac{3}{7}$"] },
+            { q: "將 $1.5:3$ 化為最簡整數比為何？", ans: "$1:2$", options: ["$15:30$", "$1:2$", "$3:6$", "$2:1$"] }
+        ];
+
+        let playerName = "";
+        let sealsUnlocked = 0;
+        let currentQIndex = 0;
+        let qList = [];
+        let questionStates = [];
+
+        function loginAndStart() {
+            const name = document.getElementById('player-name-input').value.trim();
+            if (!name) return alert("請輸入解密家大名！");
+            playerName = name;
+            document.getElementById('player-label').innerText = name;
+            document.getElementById('login-modal').classList.add('hidden');
+            initGame();
+        }
+
+        function initGame() {
+            qList = [...questions].sort(() => Math.random() - 0.5);
+            questionStates = new Array(qList.length).fill(null);
+            currentQIndex = 0;
+            sealsUnlocked = 0;
+            updateSealsUI();
+            loadQuestion();
+        }
+
+        function updateSealsUI() {
+            for(let i = 1; i <= 4; i++) {
+                const el = document.getElementById('seal-' + i);
+                if (i <= sealsUnlocked) el.classList.add('unlocked');
+                else el.classList.remove('unlocked');
+            }
+        }
+
+        function formatMath(text) {
+            if (!window.katex) return text;
+            return text.replace(/\$(.*?)\$/g, (m, math) => {
+                try { return katex.renderToString(math.trim(), { throwOnError: false }); } catch(e) { return m; }
+            });
+        }
+
+        function loadQuestion() {
+            const q = qList[currentQIndex];
+            const state = questionStates[currentQIndex];
+
+            document.getElementById('q-index').innerText = currentQIndex + 1;
+            document.getElementById('q-text').innerHTML = formatMath(q.q);
+            document.getElementById('feedback-msg').innerText = state ? (state.isCorrect ? "✨ 符文封印產生共鳴！" : "❌ 符文咒文錯誤！") : "";
+
+            const list = document.getElementById('options-list');
+            list.innerHTML = "";
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('div');
+                btn.className = "option-btn";
+                btn.innerHTML = `<span>${formatMath(opt)}</span><span onclick="event.stopPropagation(); speak('${opt.replace(/\$/g,'')}')">🔊</span>`;
+                
+                if (state) {
+                    btn.classList.add('locked');
+                    if (opt === q.ans) btn.classList.add('correct');
+                    else if (opt === state.selected && !state.isCorrect) btn.classList.add('wrong');
+                } else {
+                    btn.onclick = () => crackRune(opt, q.ans, btn);
+                }
+                list.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = (currentQIndex === 0);
+            document.getElementById('next-btn').disabled = !state;
+        }
+
+        function crackRune(selected, correct, btnEl) {
+            if (questionStates[currentQIndex]) return;
+            const isCorrect = (selected === correct);
+            questionStates[currentQIndex] = { isCorrect, selected };
+            document.getElementById('next-btn').disabled = false;
+
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.classList.add('locked'));
+
+            if (isCorrect) {
+                btnEl.classList.add('correct');
+                playSound('unlock');
+                sealsUnlocked = Math.min(4, Math.floor((currentQIndex + 1) / (qList.length / 4)));
+                updateSealsUI();
+
+                if (sealsUnlocked >= 4) {
+                    document.getElementById('portal-door').classList.add('open');
+                }
+            } else {
+                btnEl.classList.add('wrong');
+                playSound('lock');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQIndex < qList.length - 1) {
+                currentQIndex++; loadQuestion();
+            } else {
+                showEscapeModal();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQIndex > 0) {
+                currentQIndex--; loadQuestion();
+            }
+        }
+
+        function showEscapeModal() {
+            const modal = document.getElementById('escape-modal');
+            playSound('win');
+            document.getElementById('escape-desc').innerHTML = `
+                太震撼了！解密大師 <b>${playerName}</b>！<br><br>
+                你成功解開四大元素機關，石門開啟，重見光明！
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function playQuestionAudio() {
+            speak(qList[currentQIndex].q.replace(/\$/g, ''));
+        }
+
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text); u.lang = 'zh-TW';
+            window.speechSynthesis.speak(u);
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+
+            if (type === 'unlock') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(659, now); osc.frequency.exponentialRampToValueAtTime(1318, now + 0.15);
+                gain.gain.setValueAtTime(0.25, now); gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
+            } else if (type === 'lock') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now); osc.frequency.linearRampToValueAtTime(80, now + 0.2);
+                gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'win') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(523, now); osc.frequency.setValueAtTime(783, now + 0.15); osc.frequency.setValueAtTime(1046, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now); gain.gain.linearRampToValueAtTime(0, now + 0.7);
+                osc.start(now); osc.stop(now + 0.7);
+            }
+        }
+    </script>
+</body>
+</html>
