@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Antigravity Skill](https://img.shields.io/badge/Antigravity-Skill-blue.svg)](https://github.com)
 
+![盲盒測驗畫面預覽](preview.png)
+
 ---
 
 ## 🌟 核心特色（首波：盲盒抽卡養成模板）
