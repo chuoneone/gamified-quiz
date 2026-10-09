@@ -60,6 +60,10 @@
 
 安裝完成後，AI 即可自動獲得「遊戲化互動測驗產生器」的所有能力！
 
+**Claude Code 手動安裝**：將本 repo 內容複製到 `~/.claude/skills/gamified-quiz/`（全域）或 `<專案>/.claude/skills/gamified-quiz/`（單一專案），重新開啟 session 即生效。
+
+> ⚠️ **注意**：遊戲預設只使用本機 LocalStorage。若要啟用盲盒的雲端同步，請在 `blind-box.html` 填入**你自己的** `GAS_URL`；教師後台密碼寫在前端，僅供教學便利，不是真正的安全保護；KaTeX、字型、Three.js 等資源由 CDN 載入，需要網路。
+
 ---
 
 ### 2. 生成遊戲化測驗
